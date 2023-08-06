@@ -13,6 +13,12 @@ const configuration = new Configuration({
   apiKey,
 });
 
+// this works for this sentence
+const sentence =
+  "Your use of the word 'because' is incorrect in that sentence.";
+// but not for
+// const sentence = "You should use more words like 'empathy' and 'love' in your response."
+
 const openai = new OpenAIApi(configuration);
 
 openai
@@ -20,16 +26,15 @@ openai
     model: "gpt-3.5-turbo",
     messages: [
       {
-        role: "assistant",
-        content:
-          "Given a sentence in English, translate it to Hebrew, excluding any words within single-quotes (') - leave them in English.",
-      },
-      {
         role: "user",
-        content:
-          "You should use more words such as 'love' or 'empathy' in your response.",
+        content: `Given a sentence in English, translate it to Hebrew. Do *not* translate any text surrounded by quotes (').
+
+Your sentence is:
+${sentence}
+`,
       },
     ],
+    temperature: 0,
   })
   .then((res) => {
     console.log(JSON.stringify(res.data, null, 2));
